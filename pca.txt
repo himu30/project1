@@ -1,0 +1,50 @@
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_classification
+from sklearn.datasets import make_blobs
+from sklearn.datasets import make_gaussian_quantiles
+import sklearn
+from sklearn.cross_validation import train_test_split
+from sklearn import svm
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.decomposition import PCA
+data=sklearn.datasets.make_classification(n_samples=5000, n_features=10, 
+                                          n_informative=2, n_redundant=0, 
+                                          n_repeated=0, n_classes=4, 
+                                          n_clusters_per_class=1, weights=None, 
+                                          flip_y=0.01, class_sep=1.0, hypercube=True, 
+                                          shift=0.0, scale=1.0, shuffle=True, 
+                                          random_state=None)
+x,y=[],[]
+for i in data[0]:
+    x.append(i[0])
+    y.append(i[1])
+plt.scatter(x,y,c=data[1])
+plt.show()
+raw_input("\n............Press enter to continue\n")
+x_train,x_test,y_train,y_test=train_test_split(data[0],data[1],test_size=0.2)
+model=svm.SVC()
+model.fit(x_train,y_train)
+pred=model.predict(x_test)
+l=len(pred)
+pred[0:10]
+flag=pred==y_test
+acc=0.0
+for i in flag :
+    if i==True:
+        acc+=1
+        
+print (acc/l)*100
+neigh = KNeighborsClassifier(n_neighbors=2)
+neigh.fit(x_train,y_train)
+print(neigh.predict([100,100]))
+pca = PCA(n_components=2)
+pca.fit(x_train)
+new_data=pca.transform(x_train)
+m,n=[],[]
+for i in new_data:
+    m.append(i[0])
+    n.append(i[1])
+plt.scatter(m,n,c=y_train)
+plt.show()
+
+
